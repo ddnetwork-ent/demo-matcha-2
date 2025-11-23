@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matcha Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --cream: #FAF7F0;
+            --soft-cream: #F5F0E8;
+            --sage: #7A9A7A;
+            --moss: #4A6A4A;
+            --olive: #3A5A3A;
+            --light-sage: #A8C0A8;
+            --pale-sage: #E4EDE4;
+            --warm-white: #FFFEF9;
+            --text-dark: #333333;
+            --text-muted: #666666;
+            --border-light: #E8E8E8;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        body {
+            background: var(--warm-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .text-sage {
+            color: var(--sage);
+        }
+        
+        .bg-sage {
+            background-color: var(--sage);
+        }
+        
+        .bg-cream {
+            background-color: var(--cream);
+        }
+        
+        .bg-soft-cream {
+            background-color: var(--soft-cream);
+        }
+        
+        .border-sage {
+            border-color: var(--sage);
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+            background: var(--warm-white);
+            border: 1px solid var(--border-light);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(122, 154, 122, 0.1);
+        }
+        
+        .product-image {
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.03);
+        }
+        
+        .btn-primary {
+            background: var(--sage);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--moss);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            border: 1px solid var(--sage);
+            color: var(--sage);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--sage);
+            color: white;
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 254, 249, 0.85);
+        }
+        
+        .notification {
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            background: var(--warm-white);
+            border-left: 3px solid var(--sage);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .tab-active {
+            border-bottom: 2px solid var(--sage);
+            color: var(--sage);
+        }
+        
+        .input-field {
+            border: 1px solid var(--border-light);
+            transition: border-color 0.2s ease;
+        }
+        
+        .input-field:focus {
+            border-color: var(--sage);
+            outline: none;
+        }
+        
+        .feature-icon {
+            background: var(--pale-sage);
+            transition: all 0.2s ease;
+        }
+        
+        .feature-icon:hover {
+            background: var(--light-sage);
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        .hero-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%237a9a7a' fill-opacity='0.03'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .badge {
+            background: var(--light-sage);
+            color: var(--olive);
+        }
+        
+        /* Watermark Styles */
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .watermark:hover {
+            opacity: 0.8;
+        }
+        
+        .watermark-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(122, 154, 122, 0.2);
+        }
+        
+        .watermark-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--sage);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .watermark-icon i {
+            color: white;
+            font-size: 10px;
+        }
+        
+        .watermark-text {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+        
+        .watermark-brand {
+            color: var(--sage);
+            font-weight: 600;
+        }
+        
+        /* Mobile watermark adjustments */
+        @media (max-width: 640px) {
+            .watermark {
+                bottom: 15px;
+                left: 15px;
+            }
+            
+            .watermark-content {
+                padding: 6px 10px;
+            }
+            
+            .watermark-icon {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .watermark-text {
+                font-size: 10px;
+            }
+        }
+        
+        /* Hide watermark on print */
+        @media print {
+            .watermark {
+                display: none;
+            }
+        }
+
+        /* Footer specific styles */
+        footer {
+            background: var(--moss);
+            color: white;
+        }
+
+        footer .text-green-100 {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        footer .text-green-200 {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: white !important;
+        }
+
+        /* Mobile specific styles */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .mobile-menu-full {
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: white;
+                z-index: 50;
+                overflow-y: auto;
+            }
+            
+            .product-grid-mobile {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .cart-item-mobile {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .cart-item-mobile img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 0.5rem;
+            }
+            
+            .footer-grid-mobile {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+            
+            .footer-mobile-last {
+                grid-column: span 2;
+            }
+        }
+
+        /* Tablet specific styles */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .product-grid-tablet {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Desktop specific styles */
+        @media (min-width: 1025px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .product-grid-desktop {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) {
+            .product-card:hover {
+                transform: none;
+            }
+            
+            .product-card:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .product-card {
+                border: 2px solid var(--text-dark);
+            }
+            
+            .btn-primary {
+                border: 2px solid var(--text-dark);
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            nav, footer, .notification, .watermark {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body class="scroll-smooth">
+    <!-- Watermark -->
+    <div class="watermark" id="watermark">
+        <div class="watermark-content">
+            <div class="watermark-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <div class="watermark-text">
+                <span class="watermark-brand">MatchaHaven</span> by ddnetwork.ent
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification fixed top-6 right-6 z-50 rounded-lg shadow-lg p-4 flex items-center space-x-3 min-w-[280px] max-w-[90vw] sm:min-w-[320px]">
+        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-check text-sage text-sm"></i>
+        </div>
+        <div class="min-w-0 flex-1">
+            <p class="font-medium text-sm">Success</p>
+            <p id="notification-message" class="text-sm text-gray-600 truncate">Item added to cart</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 nav-blur border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="w-8 h-8 bg-sage rounded-lg flex items-center justify-center">
+                        <i class="fas fa-leaf text-white text-sm"></i>
+                    </div>
+                    <span class="text-lg sm:text-xl font-semibold">Matcha<span class="text-sage">Haven</span></span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
+                    <button onclick="navigateTo('home')" class="text-gray-700 hover:text-sage font-medium transition text-sm xl:text-base">Home</button>
+                    <button onclick="navigateTo('menu')" class="text-gray-700 hover:text-sage font-medium transition text-sm xl:text-base">Menu</button>
+                    <button onclick="navigateTo('about')" class="text-gray-700 hover:text-sage font-medium transition text-sm xl:text-base">About</button>
+                    <button onclick="navigateTo('contact')" class="text-gray-700 hover:text-sage font-medium transition text-sm xl:text-base">Contact</button>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <button onclick="toggleSearch()" class="p-2 hover:bg-gray-50 rounded-lg transition">
+                        <i class="fas fa-search text-gray-600 text-sm"></i>
+                    </button>
+                    <button onclick="navigateTo('cart')" class="relative p-2 hover:bg-gray-50 rounded-lg transition">
+                        <i class="fas fa-shopping-bag text-gray-600 text-sm"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 w-4 h-4 bg-sage text-white text-xs rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2 hover:bg-gray-50 rounded-lg transition">
+                        <i id="mobile-menu-icon" class="fas fa-bars text-gray-600 text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t">
+            <div class="px-4 sm:px-6 py-3 space-y-2">
+                <button onclick="navigateTo('home'); toggleMobileMenu();" class="block w-full text-left py-3 px-4 text-gray-700 hover:text-sage hover:bg-gray-50 rounded-lg transition">Home</button>
+                <button onclick="navigateTo('menu'); toggleMobileMenu();" class="block w-full text-left py-3 px-4 text-gray-700 hover:text-sage hover:bg-gray-50 rounded-lg transition">Menu</button>
+                <button onclick="navigateTo('about'); toggleMobileMenu();" class="block w-full text-left py-3 px-4 text-gray-700 hover:text-sage hover:bg-gray-50 rounded-lg transition">About</button>
+                <button onclick="navigateTo('contact'); toggleMobileMenu();" class="block w-full text-left py-3 px-4 text-gray-700 hover:text-sage hover:bg-gray-50 rounded-lg transition">Contact</button>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div id="search-bar" class="hidden bg-white border-t">
+            <div class="max-w-3xl mx-auto p-3 sm:p-4">
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Search for matcha drinks..." class="input-field w-full px-3 py-2 pr-10 rounded-lg text-sm sm:text-base">
+                    <button onclick="performSearch()" class="absolute right-3 top-2.5 sm:top-3 text-sage">
+                        <i class="fas fa-arrow-right text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page-content pt-16">
+        <!-- Hero Section -->
+        <section class="bg-cream min-h-screen flex items-center hero-pattern">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div class="text-center lg:text-left">
+                        <div class="inline-flex items-center bg-pale-sage rounded-full px-3 py-1 mb-4 sm:mb-6">
+                            <span class="w-1.5 h-1.5 bg-sage rounded-full mr-2"></span>
+                            <span class="text-xs sm:text-sm font-medium">Premium Quality Matcha</span>
+                        </div>
+                        <h1 class="hero-title text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 font-serif leading-tight">
+                            Discover Art of <span class="text-sage">Authentic Matcha</span>
+                        </h1>
+                        <p class="hero-description text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
+                            Experience perfect harmony of tradition and innovation. Our premium matcha beverages are crafted with finest ceremonial grade matcha, sourced directly from Kyoto.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                            <button onclick="navigateTo('menu')" class="btn-primary text-white px-6 py-3 rounded-lg font-medium text-sm sm:text-base w-full sm:w-auto">
+                                Explore Menu
+                            </button>
+                            <button onclick="navigateTo('about')" class="btn-secondary px-6 py-3 rounded-lg font-medium text-sm sm:text-base w-full sm:w-auto">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative mt-8 lg:mt-0">
+                        <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&h=600&fit=crop" alt="Premium Matcha" class="rounded-2xl shadow-lg w-full max-w-md mx-auto lg:max-w-none">
+                        <div class="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white rounded-lg shadow-md p-3 sm:p-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-pale-sage rounded-full flex items-center justify-center">
+                                    <i class="fas fa-star text-sage text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-lg font-bold">4.9/5</div>
+                                    <div class="text-xs text-gray-600">2,847 Reviews</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-12 sm:py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                    <div class="text-center">
+                        <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-leaf text-sage"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Premium Quality</h3>
+                        <p class="text-gray-600 text-sm">Ceremonial grade matcha sourced directly from traditional farms in Kyoto</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-award text-sage"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Expert Crafted</h3>
+                        <p class="text-gray-600 text-sm">Master baristas trained in traditional Japanese tea ceremony techniques</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-bolt text-sage"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">Fast Delivery</h3>
+                        <p class="text-gray-600 text-sm">Same-day delivery available for orders placed before 2 PM</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="py-12 sm:py-16 bg-cream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8 sm:mb-12">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-3 font-serif">Featured Collection</h2>
+                    <p class="text-gray-600 text-sm sm:text-base">Handpicked favorites from our premium matcha selection</p>
+                </div>
+                
+                <div id="featured-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-12 sm:py-16 bg-sage text-white">
+            <div class="max-w-4xl mx-auto text-center px-4 sm:px-6">
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4 font-serif">Ready to Experience Matcha Magic?</h2>
+                <p class="text-base sm:text-lg mb-6 opacity-90">Join thousands of satisfied customers who have discovered their perfect matcha moment</p>
+                <button onclick="navigateTo('menu')" class="bg-white text-sage px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition text-sm sm:text-base">
+                    Order Now
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Menu Page -->
+    <div id="menu-page" class="page-content hidden pt-16">
+        <section class="py-12 sm:py-16 bg-cream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8 sm:mb-10">
+                    <h1 class="text-2xl sm:text-3xl font-bold mb-3 font-serif">Our Menu</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Explore our complete selection of premium matcha beverages</p>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="flex justify-center mb-8 sm:mb-10 overflow-x-auto">
+                    <div class="flex space-x-1 bg-white rounded-lg p-1 shadow-sm">
+                        <button onclick="filterProducts('all')" class="filter-tab px-3 sm:px-4 py-2 rounded-md font-medium text-xs sm:text-sm tab-active">All</button>
+                        <button onclick="filterProducts('hot')" class="filter-tab px-3 sm:px-4 py-2 rounded-md font-medium text-xs sm:text-sm">Hot</button>
+                        <button onclick="filterProducts('iced')" class="filter-tab px-3 sm:px-4 py-2 rounded-md font-medium text-xs sm:text-sm">Iced</button>
+                        <button onclick="filterProducts('specialty')" class="filter-tab px-3 sm:px-4 py-2 rounded-md font-medium text-xs sm:text-sm">Specialty</button>
+                    </div>
+                </div>
+
+                <div id="menu-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Product Detail Page -->
+    <div id="product-page" class="page-content hidden pt-16 bg-cream">
+        <section class="py-12 sm:py-16">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <button onclick="navigateTo('menu')" class="mb-4 sm:mb-6 text-sage hover:text-moss font-medium text-sm">
+                    <i class="fas fa-arrow-left mr-1"></i>Back to Menu
+                </button>
+                
+                <div id="product-detail" class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <!-- Product details will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cart-page" class="page-content hidden pt-16 bg-cream">
+        <section class="py-12 sm:py-16">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 font-serif">Shopping Cart</h1>
+                
+                <div id="cart-content">
+                    <!-- Cart content will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about-page" class="page-content hidden pt-16">
+        <section class="py-12 sm:py-16 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8 sm:mb-12">
+                    <h1 class="text-2xl sm:text-3xl font-bold mb-4 font-serif">About Matcha Haven</h1>
+                    <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">Bringing authentic Japanese matcha culture to modern world</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-8 sm:mb-12">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold mb-4 font-serif">Our Story</h2>
+                        <div class="space-y-4 text-gray-600 text-sm sm:text-base">
+                            <p>Founded in 2020, Matcha Haven emerged from a deep appreciation for Japanese tea culture and a desire to share its transformative benefits with world. Our journey began in the serene tea fields of Uji, Kyoto, where we forged relationships with family-owned farms that have been perfecting matcha cultivation for generations.</p>
+                            <p>Each cup we serve represents centuries of tradition, combined with modern innovation. Our master baristas undergo extensive training in traditional Japanese tea ceremony techniques, ensuring that every beverage maintains the integrity and spirit of authentic matcha preparation.</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop" alt="Matcha Field" class="rounded-xl shadow-md w-full">
+                    </div>
+                </div>
+
+                <div class="bg-cream rounded-xl p-6 sm:p-8">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-6 text-center font-serif">Our Values</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-hand-holding-heart text-sage"></i>
+                            </div>
+                            <h3 class="font-semibold mb-2">Quality First</h3>
+                            <p class="text-gray-600 text-sm">Never compromising on the quality of our matcha or ingredients</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-globe text-sage"></i>
+                            </div>
+                            <h3 class="font-semibold mb-2">Sustainability</h3>
+                            <p class="text-gray-600 text-sm">Supporting eco-friendly farming and sustainable business practices</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-users text-sage"></i>
+                            </div>
+                            <h3 class="font-semibold mb-2">Community</h3>
+                            <p class="text-gray-600 text-sm">Building a community of matcha enthusiasts worldwide</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact-page" class="page-content hidden pt-16">
+        <section class="py-12 sm:py-16 bg-cream">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8 sm:mb-10">
+                    <h1 class="text-2xl sm:text-3xl font-bold mb-3 font-serif">Get in Touch</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">We'd love to hear from you</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8 lg:gap-10">
+                    <div>
+                        <form id="contact-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <input type="text" required class="input-field w-full px-3 py-2 rounded-lg text-sm sm:text-base">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" required class="input-field w-full px-3 py-2 rounded-lg text-sm sm:text-base">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                                <textarea rows="5" required class="input-field w-full px-3 py-2 rounded-lg text-sm sm:text-base"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-full text-white px-4 py-3 rounded-lg font-medium text-sm sm:text-base">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 font-serif">Visit Us</h3>
+                            <div class="bg-white rounded-lg p-4 sm:p-5 shadow-sm space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-map-marker-alt text-sage text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-sm">Address</h4>
+                                        <p class="text-gray-600 text-sm">123 Green Tea Lane<br>San Francisco, CA 94102</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-phone text-sage text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-sm">Phone</h4>
+                                        <p class="text-gray-600 text-sm">(555) 123-4567</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="feature-icon w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-envelope text-sage text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-sm">Email</h4>
+                                        <p class="text-gray-600 text-sm">hello@matchahaven.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg overflow-hidden shadow-sm h-64 sm:h-80">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0978258785745!2d-122.4194186846827!3d37.774929979759045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c6c8f4459%3A0xb10ed6d7b8c5b5b5!2sTwitter%20HQ!5e0!3m2!1sen!2sus!4v1629794739904!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-moss text-white py-8 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8 footer-grid-mobile">
+                <div>
+                    <div class="flex items-center space-x-2 mb-3 sm:mb-4">
+                        <div class="w-8 h-8 bg-sage rounded-lg flex items-center justify-center">
+                            <i class="fas fa-leaf text-white text-sm"></i>
+                        </div>
+                        <span class="text-lg sm:text-xl font-semibold">Matcha<span class="text-green-200">Haven</span></span>
+                    </div>
+                    <p class="text-green-100 text-xs sm:text-sm">Premium matcha beverages crafted with tradition and innovation.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-3 text-xs sm:text-sm">Quick Links</h4>
+                    <ul class="space-y-2 text-xs sm:text-sm">
+                        <li><a href="#" onclick="navigateTo('home')" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#" onclick="navigateTo('menu')" class="hover:text-white transition">Menu</a></li>
+                        <li><a href="#" onclick="navigateTo('about')" class="hover:text-white transition">About</a></li>
+                        <li><a href="#" onclick="navigateTo('contact')" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-3 text-xs sm:text-sm">Categories</h4>
+                    <ul class="space-y-2 text-xs sm:text-sm">
+                        <li><a href="#" onclick="filterProducts('hot'); navigateTo('menu')" class="hover:text-white transition">Hot Drinks</a></li>
+                        <li><a href="#" onclick="filterProducts('iced'); navigateTo('menu')" class="hover:text-white transition">Iced Drinks</a></li>
+                        <li><a href="#" onclick="filterProducts('specialty'); navigateTo('menu')" class="hover:text-white transition">Specialty</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-mobile-last">
+                    <h4 class="font-semibold mb-3 text-xs sm:text-sm">Follow Us</h4>
+                    <div class="flex space-x-3 mb-4">
+                        <a href="#" class="w-8 h-8 bg-green-700 rounded-lg flex items-center justify-center hover:bg-green-600 transition">
+                            <i class="fab fa-facebook-f text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-green-700 rounded-lg flex items-center justify-center hover:bg-green-600 transition">
+                            <i class="fab fa-instagram text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-green-700 rounded-lg flex items-center justify-center hover:bg-green-600 transition">
+                            <i class="fab fa-twitter text-xs"></i>
+                        </a>
+                    </div>
+                    <p class="text-xs sm:text-sm">Subscribe to our newsletter for exclusive offers</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-green-700 pt-4 sm:pt-6 text-center text-xs sm:text-sm">
+                <p>&copy; 2024 Matcha Haven. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                name: 'Hot Matcha Latte',
+                category: 'hot',
+                price: 5.99,
+                image: 'https://images.unsplash.com/photo-1536013544509-e53a13c3e37a?w=400&h=400&fit=crop',
+                description: 'Creamy and smooth hot matcha latte with steamed milk and beautiful latte art',
+                ingredients: 'Premium matcha powder, steamed milk, honey (optional)',
+                rating: 4.8,
+                featured: true,
+                badge: 'Bestseller'
+            },
+            {
+                id: 2,
+                name: 'Iced Matcha Frappe',
+                category: 'iced',
+                price: 6.99,
+                image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&h=400&fit=crop',
+                description: 'Refreshing cold matcha blended with ice and topped with whipped cream',
+                ingredients: 'Matcha powder, milk, ice, whipped cream, vanilla syrup',
+                rating: 4.9,
+                featured: true,
+                badge: 'New'
+            },
+            {
+                id: 3,
+                name: 'Classic Iced Matcha',
+                category: 'iced',
+                price: 4.99,
+                image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400&h=400&fit=crop',
+                description: 'Pure and simple iced matcha green tea, refreshing and energizing',
+                ingredients: 'Premium matcha powder, cold water, ice',
+                rating: 4.7,
+                featured: false
+            },
+            {
+                id: 4,
+                name: 'Matcha Bubble Tea',
+                category: 'specialty',
+                price: 7.49,
+                image: 'https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=400&h=400&fit=crop',
+                description: 'Creamy matcha with chewy tapioca pearls for ultimate boba experience',
+                ingredients: 'Matcha powder, milk, tapioca pearls, brown sugar syrup',
+                rating: 5.0,
+                featured: true,
+                badge: 'Popular'
+            },
+            {
+                id: 5,
+                name: 'Matcha Affogato',
+                category: 'specialty',
+                price: 8.49,
+                image: 'https://images.unsplash.com/photo-1497534446932-c925b458314e?w=400&h=400&fit=crop',
+                description: 'Hot matcha shot poured over vanilla ice cream for a delightful contrast',
+                ingredients: 'Concentrated matcha, vanilla ice cream, honey drizzle',
+                rating: 4.9,
+                featured: false
+            },
+            {
+                id: 6,
+                name: 'Coconut Matcha Latte',
+                category: 'specialty',
+                price: 6.49,
+                image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=400&fit=crop',
+                description: 'Tropical twist with coconut milk creating a smooth, dairy-free delight',
+                ingredients: 'Matcha powder, coconut milk, agave nectar, coconut flakes',
+                rating: 4.8,
+                featured: false
+            }
+        ];
+
+        // State Management
+        let cart = [];
+        let currentPage = 'home';
+        let selectedProduct = null;
+        let currentFilter = 'all';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartFromStorage();
+            renderFeaturedProducts();
+            renderMenuProducts();
+            updateCartUI();
+            
+            // Contact form handler
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showNotification('Message sent successfully!');
+                this.reset();
+            });
+
+            // Handle window resize
+            handleResize();
+            window.addEventListener('resize', handleResize);
+            
+            // Initialize watermark visibility
+            initWatermark();
+        });
+
+        function initWatermark() {
+            // Show watermark after a short delay for better UX
+            setTimeout(() => {
+                const watermark = document.getElementById('watermark');
+                watermark.style.opacity = '0.6';
+            }, 2000);
+        }
+
+        function handleResize() {
+            // Close mobile menu on resize to desktop
+            if (window.innerWidth >= 1024) {
+                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuIcon.classList.remove('fa-times');
+                    mobileMenuIcon.classList.add('fa-bars');
+                }
+            }
+        }
+
+        // Navigation Functions
+        function navigateTo(page) {
+            document.querySelectorAll('.page-content').forEach(p => {
+                p.classList.add('hidden');
+            });
+            document.getElementById(`${page}-page`).classList.remove('hidden');
+            currentPage = page;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Close mobile menu after navigation
+            if (window.innerWidth < 1024) {
+                toggleMobileMenu();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('mobile-menu-full');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                // Prevent body scroll when menu is open
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('mobile-menu-full');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                // Restore body scroll
+                document.body.style.overflow = '';
+            }
+        }
+
+        function toggleSearch() {
+            const searchBar = document.getElementById('search-bar');
+            searchBar.classList.toggle('hidden');
+            if (!searchBar.classList.contains('hidden')) {
+                document.getElementById('search-input').focus();
+            }
+        }
+
+        function performSearch() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            if (searchTerm) {
+                const filtered = products.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) || 
+                    p.description.toLowerCase().includes(searchTerm)
+                );
+                renderMenuProducts(filtered);
+                navigateTo('menu');
+                toggleSearch();
+            }
+        }
+
+        // Product Rendering Functions
+        function renderFeaturedProducts() {
+            const container = document.getElementById('featured-products');
+            const featured = products.filter(p => p.featured);
+            
+            container.innerHTML = featured.map(product => `
+                <div class="product-card rounded-lg overflow-hidden cursor-pointer" onclick="viewProduct(${product.id})">
+                    <div class="relative overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-40 sm:h-48 object-cover">
+                        ${product.badge ? `<span class="badge absolute top-3 right-3 px-2 py-1 rounded text-xs font-semibold">${product.badge}</span>` : ''}
+                    </div>
+                    <div class="p-3 sm:p-4">
+                        <h3 class="font-semibold mb-2 font-serif text-sm sm:text-base">${product.name}</h3>
+                        <p class="text-gray-600 text-xs sm:text-sm mb-3 line-clamp-2">${product.description}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-sage text-sm sm:text-base">$${product.price}</span>
+                            <button onclick="event.stopPropagation(); addToCart(${product.id})" class="bg-sage text-white p-2 rounded-lg hover:bg-moss transition">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderMenuProducts(productsToRender = products) {
+            const container = document.getElementById('menu-products');
+            
+            container.innerHTML = productsToRender.map(product => `
+                <div class="product-card rounded-lg overflow-hidden cursor-pointer" onclick="viewProduct(${product.id})">
+                    <div class="relative overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-40 sm:h-48 object-cover">
+                        ${product.badge ? `<span class="badge absolute top-3 right-3 px-2 py-1 rounded text-xs font-semibold">${product.badge}</span>` : ''}
+                    </div>
+                    <div class="p-3 sm:p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-semibold font-serif text-sm sm:text-base">${product.name}</h3>
+                            <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded capitalize">${product.category}</span>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            ${generateStars(product.rating)}
+                            <span class="text-xs text-gray-600 ml-1">${product.rating}</span>
+                        </div>
+                        <p class="text-gray-600 text-xs sm:text-sm mb-3 line-clamp-2">${product.description}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-sage text-sm sm:text-base">$${product.price}</span>
+                            <button onclick="event.stopPropagation(); addToCart(${product.id})" class="bg-sage text-white p-2 rounded-lg hover:bg-moss transition">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewProduct(productId) {
+            selectedProduct = products.find(p => p.id === productId);
+            navigateTo('product');
+            renderProductDetail();
+        }
+
+        function renderProductDetail() {
+            if (!selectedProduct) return;
+            
+            const container = document.getElementById('product-detail');
+            container.innerHTML = `
+                <div class="grid lg:grid-cols-2 gap-6 lg:gap-8">
+                    <div class="relative overflow-hidden">
+                        <img src="${selectedProduct.image}" alt="${selectedProduct.name}" class="w-full h-64 sm:h-80 object-cover">
+                    </div>
+                    <div class="p-4 sm:p-6 lg:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+                            <h1 class="text-xl sm:text-2xl font-bold font-serif">${selectedProduct.name}</h1>
+                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-sm capitalize mt-2 sm:mt-0">${selectedProduct.category}</span>
+                        </div>
+                        
+                        <div class="flex items-center mb-4">
+                            ${generateStars(selectedProduct.rating)}
+                            <span class="text-sm text-gray-600 ml-2">${selectedProduct.rating} (${Math.floor(Math.random() * 500) + 100} reviews)</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4 text-sm sm:text-base">${selectedProduct.description}</p>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-semibold mb-2 text-sm sm:text-base">Ingredients</h3>
+                            <p class="text-gray-600 text-sm">${selectedProduct.ingredients}</p>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+                            <span class="text-2xl font-bold text-sage">$${selectedProduct.price}</span>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="decreaseQuantity()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span id="product-quantity" class="w-8 text-center font-semibold">1</span>
+                                <button onclick="increaseQuantity()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+                            <button onclick="addToCart(${selectedProduct.id})" class="btn-primary flex-1 text-white py-3 rounded-lg font-medium text-sm sm:text-base">
+                                <i class="fas fa-shopping-bag mr-2 text-sm"></i>Add to Cart
+                            </button>
+                            <button onclick="buyNow(${selectedProduct.id})" class="btn-secondary flex-1 py-3 rounded-lg font-medium text-sm sm:text-base">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterProducts(category) {
+            currentFilter = category;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('tab-active');
+            });
+            event.target.classList.add('tab-active');
+            
+            // Filter products
+            const filtered = category === 'all' 
+                ? products 
+                : products.filter(p => p.category === category);
+            
+            renderMenuProducts(filtered);
+        }
+
+        // Cart Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            saveCartToStorage();
+            updateCartUI();
+            showNotification(`${product.name} added to cart!`);
+        }
+
+        function buyNow(productId) {
+            addToCart(productId);
+            navigateTo('cart');
+        }
+
+        function updateQuantity(id, change) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity = Math.max(1, item.quantity + change);
+                saveCartToStorage();
+                updateCartUI();
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCartToStorage();
+            updateCartUI();
+            showNotification('Item removed from cart');
+        }
+
+        function getTotalItems() {
+            return cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        function getTotalPrice() {
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').textContent = getTotalItems();
+            
+            if (currentPage === 'cart') {
+                renderCart();
+            }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-content');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 sm:p-8 text-center">
+                        <i class="fas fa-shopping-bag text-4xl text-gray-300 mb-4"></i>
+                        <h2 class="text-xl font-bold mb-2 font-serif">Your cart is empty</h2>
+                        <p class="text-gray-600 mb-6 text-sm">Add some delicious matcha drinks to get started!</p>
+                        <button onclick="navigateTo('menu')" class="btn-primary text-white px-6 py-3 rounded-lg font-medium text-sm sm:text-base">
+                            Browse Menu
+                        </button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                        ${cart.map(item => `
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center p-4 border-b border-gray-100 last:border-b-0 gap-4 cart-item-mobile">
+                                <img src="${item.image}" alt="${item.name}" class="w-full sm:w-16 sm:h-16 object-cover rounded-lg sm:mr-4">
+                                <div class="flex-1 w-full sm:w-auto">
+                                    <h3 class="font-semibold font-serif text-sm sm:text-base">${item.name}</h3>
+                                    <p class="text-gray-600 text-sm">$${item.price.toFixed(2)} each</p>
+                                </div>
+                                <div class="flex items-center space-x-2 mr-4">
+                                    <button onclick="updateQuantity(${item.id}, -1)" class="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <span class="w-6 text-center text-sm font-semibold">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.id}, 1)" class="w-6 h-6 rounded bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <div class="w-full sm:w-16 text-right font-semibold text-sm sm:text-base mr-4">
+                                    $${(item.price * item.quantity).toFixed(2)}
+                                </div>
+                                <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition self-end sm:self-auto">
+                                    <i class="fas fa-trash text-sm"></i>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm sm:text-base">Subtotal</span>
+                            <span class="text-sm sm:text-base">$${getTotalPrice().toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm sm:text-base">Delivery</span>
+                            <span class="text-sm sm:text-base">$3.99</span>
+                        </div>
+                        <div class="border-t pt-3 flex justify-between items-center mb-4">
+                            <span class="font-semibold font-serif text-sm sm:text-base">Total</span>
+                            <span class="font-bold text-sage text-sm sm:text-base">$${(getTotalPrice() + 3.99).toFixed(2)}</span>
+                        </div>
+                        <button onclick="checkout()" class="btn-primary w-full text-white py-3 rounded-lg font-medium text-sm sm:text-base">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function checkout() {
+            showNotification('Order placed successfully! Thank you for your purchase.');
+            cart = [];
+            saveCartToStorage();
+            updateCartUI();
+            navigateTo('home');
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('matchaHavenCart', JSON.stringify(cart));
+        }
+
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('matchaHavenCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+        }
+
+        // Utility Functions
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star text-yellow-500 text-xs"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt text-yellow-500 text-xs"></i>';
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                stars += '<i class="far fa-star text-yellow-500 text-xs"></i>';
+            }
+            
+            return stars;
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notification-message');
+            
+            messageElement.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function increaseQuantity() {
+            const quantityElement = document.getElementById('product-quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            quantityElement.textContent = quantity + 1;
+        }
+
+        function decreaseQuantity() {
+            const quantityElement = document.getElementById('product-quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            if (quantity > 1) {
+                quantityElement.textContent = quantity - 1;
+            }
+        }
+    </script>
+</body>
+</html>
